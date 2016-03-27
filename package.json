@@ -1,5 +1,5 @@
 {
-  "name": "es5-compat-table",
+  "name": "compat-table",
   "version": "0.0.0",
   "main": "node.js",
   "engine": {
@@ -8,30 +8,38 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/rvagg/es5-compat-table.git"
+    "url": "git://github.com/kangax/compat-table.git"
   },
   "private": true,
   "dependencies": {
-    "chalk": "~0.5.0-1",
-    "cheerio": "~0.18.0",
-    "object-assign": "~1.0.0",
-    
-    "babel":          "*",
-    "es6-transpiler": "*",
-    "closurecompiler":"*",
-    "traceur":        "*",
-    "typescript":     "*",
-    "jstransform":    "*",
-    "esprima":        "*",
-    "espree":         "*",
-    "jshint":         "*",
-    "es5-shim": "*",
-    "es6-shim": "*",
-    "es7-shim": ">= 1.0.4",
-    "core-js": "^0.9.9"
+    "chalk":               "~0.5.0-1",
+    "cheerio":             "~0.18.0",
+    "object.assign":       "^3.0.1",
+
+    "babel-core":          "latest",
+    "babel-preset-es2015": "latest",
+    "babel-preset-stage-0":"latest",
+    "babel-polyfill":      "latest",
+    "es6-transpiler":      "latest",
+    "closurecompiler":     "latest",
+    "traceur":             "latest",
+    "typescript":          "latest",
+    "jstransform":         "latest",
+    "esprima":             "latest",
+    "espree":              "latest",
+    "jshint":              "latest",
+    "es5-shim":            "latest",
+    "es6-shim":            "latest",
+    "es7-shim":            "latest",
+    "core-js":             "latest",
+    "esdown":              "latest"
   },
   "scripts": {
-    "lint": "jshint data-es5.js data-es6.js data-es7.js",
+    "lint": "jshint data-es5.js data-es6.js data-esnext.js",
+    "build": "node build.js",
     "build:compilers": "node build.js compilers"
+  },
+  "config": {
+    "unsafe-perm": true
   }
 }

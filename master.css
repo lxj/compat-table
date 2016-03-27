@@ -5,14 +5,42 @@ html {
   box-sizing: inherit;
 }
 body {
+    background-color: #fff;
+    color: #000;
     font-family: 'Open Sans', sans-serif; margin: 0; font-weight: 300; display: inline-block;
     width: 100%;
 }
 :target {
     background: #ffc
 }
+@media (max-width: 468px) {
+    .hidden-tiny {
+        display: none !important;
+    }
+}
+@media (max-width: 768px) {
+    .hidden-mobile {
+        display: none !important;
+    }
+}
+@media (max-width: 1024px) {
+    .hidden-tablet {
+        display: none !important;
+    }
+}
 table {
-    margin-bottom: 2em; width: 100%;
+    margin-bottom: 2em; 
+    min-width: 100%;
+}
+thead {
+    background: white;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+}
+thead > tr:nth-child(2) > th {
+    box-shadow: 0 0 0 2px white;
 }
 th {
     font-weight: normal; text-align: center; padding: 1em 0.45em; position: relative; min-width: 40px; font-size: 13px; background: #eee; vertical-align: middle;
@@ -29,18 +57,26 @@ td {
 body:not(.es6) td {
     padding-left:0.5rem;
 }
-.es6 [significance] td:first-child:before {
+.es6 [significance] td:first-child:before,
+.esnext [significance] td:first-child:before {
     content: "⬤";
     opacity:0.2;
     width:1.5rem;
     text-align:center;
     display:inline-block;
 }
-.es6 [significance="0.25"] td:first-child:before {
+.es6 [significance="0.125"]  td:first-child:before,
+.esnext [significance="0.125"]  td:first-child:before {
     content: "⬤";
-    font-size:5px;
+    font-size:3px;
 }
-.es6 [significance="0.5"] td:first-child:before {
+.es6 [significance="0.25"] td:first-child:before,
+.esnext [significance="0.25"] td:first-child:before {
+    content: "⬤";
+    font-size:6px;
+}
+.es6 [significance="0.5"] td:first-child:before,
+.esnext [significance="0.5"] td:first-child:before {
     content: "⬤";
     font-size:9px;
 }
@@ -53,7 +89,7 @@ td .anchor {
     display: block; position: absolute; top: -5px; left: -17px; text-decoration: none; padding: 5px; color: #fff;
 }
 td:first-child {
-    min-width: 320px;
+    min-width: 360px;
 }
 a[href^='#'] {
     text-decoration: none;
@@ -71,6 +107,15 @@ tr.category td {
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 5px;
+}
+
+.controls, .legend {
+  display: inline-block;
+  width: 50%;
+  vertical-align: top;
+}
+.controls {
+    height: 75px;
 }
 
 /* platforms colour legend */
@@ -142,8 +187,12 @@ table.one-selected td.selected {
 .tally,
 .no,
 .strict,
-.not-applicable {
+.not-applicable,
+.unknown {
     text-align: center; font-size: 0.8em; padding: 0.25em 0.5em; color: #fff;
+}
+.unknown {
+	color: #000;
 }
 
 /* yes/no/tally grid cell colors */
@@ -244,13 +293,8 @@ td[title] {
 .obsolete, .unstable {
     display: none;
 }
-#show-obsolete:checked ~ table .obsolete,
-#show-unstable:checked ~ table .unstable {
-    display: table-cell;
-}
-/* for IE compatibility, this must be a separate rule. */
-#show-obsolete[value='on'] ~ table .obsolete,
-#show-unstable[value='on'] ~ table .unstable, {
+body.show-obsolete .obsolete,
+body.show-unstable .unstable {
     display: table-cell;
 }
 
@@ -261,10 +305,60 @@ td[title] {
 }
 #header {
     background: #454545; margin-bottom: 0.5em; color: #eee; text-decoration: none; width: 100%;
-    padding: 0.5em; font-size: 1.25em; overflow: hidden
+    font-size: 1.25em; overflow: hidden
 }
 #header a {
     color: inherit;
+}
+#header #nav {
+    float: left;
+    margin-top: 13px;
+    margin-left: 10px;
+}
+@media (max-width: 1360px) {
+    #header #nav {
+        margin-top: 16px;
+        margin-left: 5px;
+        font-size: .8em;
+    }
+}
+@media (max-width: 850px) {
+    #header #nav {
+        margin-top: 17px;
+        margin-left: 5px;
+        font-size: .7em;
+    }
+}
+#logo {
+    display: block;
+    float: left;
+    padding: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-right: 1px solid #3a3a3a;
+}
+#logo:hover {
+    background-color: #333;
+}
+#logo:active {
+    background-color: #2a2a2a;
+}
+#logo img {
+    display: block;
+    width: 40px;
+    height: 40px;
+}
+
+#header .social {
+    font-size:0.8em;
+    float:right;
+    font-weight:normal;
+    margin: 14px;
+}
+@media (max-width: 600px) {
+    #header .social {
+        display: none !important;
+    }
 }
 
 #header .versions {
@@ -290,11 +384,20 @@ td[title] {
 .warning {
     background: #ffc; display: inline-block; margin: 0 0 1em 0; padding: 0.25em;
 }
-label[for="show-obsolete"],label[for="show-unstable"] {
-    background: #eef; padding: 5px; margin-left: 10px; margin-right: -30px; padding-right: 30px;
+label[for="show-obsolete"],
+label[for="show-unstable"],
+label[for="sort"] {
+    padding: 5px;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+label[for="show-obsolete"],
+label[for="show-unstable"] {
+    background: #eef;
 }
 label[for="sort"] {
-    background: #fee; margin-left: 20px; padding: 5px; margin-right: -30px; padding-right: 30px;
+    background: #fee;
 }
 .also-see {
     font-size: 14px; display: inline-block; background:#ddf; padding: 12px; position:absolute;top:0;left:50%;margin:0em 0em 0.5em -174px; color: #333; font-family: 'Open Sans', sans-serif;
@@ -325,7 +428,7 @@ label[for="sort"] {
 /*.non-standard #header {
     background: #0094c0; color: #fff;
 }
-.es7 #header {
+.esnext #header {
     background: DarkSlateBlue;
 }*/
 
@@ -338,6 +441,8 @@ label[for="sort"] {
 }
 .num-features {
     position: absolute; top: -15px; right: 0px; font-size: 11px;
+    transition-property: top;
+    transition-duration: .5s;
 }
 .num-features b {
     font-weight: bold;
@@ -360,4 +465,20 @@ label[for="sort"] {
 .by iframe {
     position: relative;
     top: 7px;
+}
+
+.floatThead-container {
+    background: #fff;
+    overflow: visible !important;
+}
+body.hide-platformtype .floatThead-container.floating-header sup.num-features { 
+    top: -3px;
+    display: inline-block;
+    padding-left: 3px;
+}
+body.hide-platformtype .platformtype {
+    display: none;
+}
+body.hide-platformtype sup.num-features {
+    background-color: #fff;
 }
